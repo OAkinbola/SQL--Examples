@@ -1,0 +1,255 @@
+Q1: Write a SELECT statement that return three columns from the vendors table:  vendor_name, vendor_contact_last_name and vendor_contact_first_name. then, run 
+	 this statement to make sure it works correctly. Add an ORDER BY clause to this statement that sorts the result set by last name and then  first name, both in 
+   ascending sequence. then run this statement again to make sure it works correctly. this is a good way to build and test a statement one claStored Proceduresuse at a time.
+       
+SELECT  
+vendor_name, vendor_contact_last_name,vendor_contact_first_name 
+FROM
+vendors 
+ORDER BY
+vendor_contact_last_name,vendor_contact_first_name;
+
+Q2: Write a select statement that returns one column form the vendors tables named full_name that joins the vendor_contact_last_name and vendor_contact_first_name columns.
+    Format this column with the last name, a comma, a space and the first name like this : Doe, John sort the result set by last name and then first name in ascending sequence.
+    Return only the contacts whose last name begins with the letter A, B, C OR E.Thvendorsis should retrieve 4l rows*/
+
+SELECT concat(vendor_contact_last_name, ',' , vendor_contact_first_name ) AS full_name  FROM  vendors 
+-- select (vendor_contact_last_name + '' + vendor_contact_first_name) as full_name from vendors
+WHERE vendor_contact_last_name LIKE'A%'
+or
+vendor_contact_last_name LIKE'B%' 
+or 
+vendor_contact_last_name LIKE'C%'
+or
+vendor_contact_last_name LIKE'E%'  
+ORDER BY vendor_contact_last_name,vendor_contact_first_name ;
+
+Q3: Write  a select statement that returns these column names and data form the invoice table:
+      Due Date        the invoice_due_date column
+      Invoice Total    The invoice_total column
+       C             10% of the value of invoice_total
+      plus 10%         the value of invoice_total plus 10%
+      Return only the rows with an ivoice total that greater than or equal to 
+      500 and less than or equal to 1000. this should retrieve 12 rows.
+      
+SELECT invoice_due_date As 'Due Date',  invoice_total AS 'Invoice Total', (invoice_total*0.10) AS '10%', (invoice_total+(invoice_total*0.10)) AS'plus 10%'
+FROM Invoices 
+WHERE invoice_total >=500 AND invoice_total<=1000
+ORDER BY invoice_due_date 
+DESC;
+
+Q4:  Write a select statement thar returns these columns from the invoices table:
+	  invoice_ number       the invoice_number column
+      invoice_ total        the invoice_total column
+      payment_credit_total  sum of the payment_total and credit_total columns
+      balance_due            the invoice_total column minus the payment_total and credit_total columns
+      Return only invoice that have a balance due greater than $50 sort the result set by balnce due in descending sequence
+      use the limit clause so the result set contains only the rows with the 5 largest balnce
+      
+SELECT invoice_number, invoice_total, (payment_total +credit_total) AS payment_credit_total, 
+(invoice_total -(payment_total +credit_total)) AS balance_due
+FROM invoices
+WHERE (invoice_total -(payment_total +credit_total)) > 50 
+ORDER BY (invoice_total -(payment_total +credit_total))
+DESC LIMIT 5;
+
+Q5:  Write a select statement that returns these columns from the invoices table: 
+    invoice_number      The invoice_number column
+    invoice_date        The invoice_date column
+    balance_due         the invoice_total column minus the payment_total and credit_total columns
+    payment_date         The payment_date column
+    Return only the rows whwere the payment_date column contains a null value. this sgoud retrieve 11 rows
+    
+ SELECT invoice_number, invoice_date, (invoice_total -(payment_total +credit_total)) AS balance_due,payment_date
+ FROM invoices
+ WHERE payment_date IS NULL;
+ 
+ Q6: Write a select statement without a FROM clause the CUURENT_DATE function to return the current date in its default format. use the date_format function to 
+ format the current  date in this format: mm-dd-yyyy. this displays the month, day, and four digit year of the current_date Give this column as alias of the current_date, 
+ to do that, you must enclose the alias in quite since the name is already used by the CUURENT_DATE function
+SELECT 
+current_date() AS 'Default format',
+date_format(current_date(), '%m/%d/%Y')  AS 'current_date';
+
+Q6: Write a select statement with a FROM clause that creates a row with these columns:
+      starting_principal       starting principal of $50,000
+      interest                  6.5% of the principal
+      principal_plus_interest   the principla plus the interest
+      to calculate the third colum, add the expression you used for the first twp columns*/
+SELECT 50000 AS starting_principal, (50000 * 0.065) AS interest, 50000+(50000 * 0.065) AS principal_plus_interest;
+
+
+use my_guitar_shop;
+Q7:   Write a SELECT statement that returns four columns from the Products table: product_code, product_name, list_price, and discount_percent. Add an ORDER BY 
+clause to this statement that sorts the result set by list price in descending sequence.
+
+SELECT product_code,product_name,list_price,discount_percent
+FROM products
+ORDER BY list_price DESC;
+
+Q8: Write a SELECT statement that returns these columns from the Products table: product_name, list_price, and date_added. Return only the rows with a list price 
+that is greater than 500 and less than 2000.  Sort the result set in descending sequence by the date_added column.
+
+SELECT product_name, list_price, date_added
+FROM products
+WHERE list_price >500 AND list_price < 2000
+ORDER BY date_added DESC;
+
+Q9:  Write a SELECT statement that returns these column names from the Order_Items table: item_id, item_price, discount_amount,  quantity, price_total (i.e., multiply the 
+item price by the quantity), discount_total (i.e., multiply the discount amount by the quantity), item_total (i.e., subtract the discount amount from the item price and 
+then multiply by the quantity).  Only return rows where the item_total is greater than 500. Sort the result set by item total in descending sequence.
+
+SELECT item_id, item_price, discount_amount, quantity, 
+       (item_price * quantity) AS price_total,
+       (discount_amount * quantity) AS discount_total,
+	   ((item_price  - discount_amount) *quantity) AS item_total FROM order_items
+WHERE  ((item_price  - discount_amount) *quantity) >500
+ORDER BY item_total
+DESC;
+
+Q10: Write a SELECT statement that returns these columns from the Orders table: order_id, order_date,  ship_date. Return only the rows where the ship_date column contains a
+null value
+
+SELECT order_id, order_date, ship_date FROM orders
+WHERE ship_date IS null;
+
+Q11: Write a SELECT statement without a FROM clause that creates a row with these columns:
+      price: 100 (dollars)
+      tax_rate: .07 (7 percent)
+      tax_amount: price multiplied by the tax rate
+       total: price plus the tax amount 
+       
+SELECT 100 AS price , 0.07 as tax_rate, (100 * 0.07) AS tax_amount , (100 +(100 * 0.07)) AS total; 
+
+ Q12--Write a SELECT statement that joins the Categories table to the Products table and returnsthese columns: category_name, product_name, list_price. Sort 
+ the result set by category_name and then by product_name in ascending sequence
+
+SELECT 
+    c.category_name, p.product_name, p.list_price
+FROM
+    categories c
+        JOIN
+    products p ON c.category_id = p.category_id
+ORDER BY category_name , product_name ASC;
+
+Q13- Write a SELECT statement that joins the Customers table to the Addresses table and returns these columns: first_name, last_name, line1, city, state, zip_code.
+Return one row for each address for the customer with an email address of allan.sherwood@yahoo.com.
+
+SELECT 
+    c.first_name, c.last_name, a.line1, a.city, a.state, a.zip_code
+FROM
+    customers c
+        JOIN
+    addresses a ON c.customer_id = a.customer_id
+WHERE
+    email_address = 'allan.sherwood@yahoo.com';
+
+Q14 : Write a SELECT statement that joins the Customers, Orders, Order_Items, and Products tables. This statement should return these columns: last_name, first_name, 
+order_date, product_name, item_price, discount_amount, and quantity. Use aliases for the tables. Sort the final result set by last_name, order_date, and product_name
+
+SELECT 
+    C.last_name,
+    C.first_name,
+    O.order_date,
+    P.product_name,
+    I.item_price,
+    I.discount_amount,
+    I.quantity
+FROM
+    customers C
+        JOIN
+    orders O ON C.customer_id = O.customer_id
+        JOIN
+    order_items I ON O.order_id = I.order_id
+        JOIN
+    products P ON I.product_id = P.product_id
+ORDER BY C.last_name , O.order_date , P.product_name;
+
+ Q15:  Write a SELECT statement that returns the product_id, product_name and list_price columns fromthe Products table. Return one row for each product that has the 
+ same list price as another product.Hint: Use a self-join to check that the product_id columns are not equal but the list_price columns are equal.
+
+SELECT 
+    p1.product_id, p1.product_name, p1.list_price
+FROM
+    Products AS p1
+        JOIN
+    Products AS p2 ON p1.product_id <> p2.product_id
+        AND p1.list_price = p2.list_price;
+
+Q16 : Use the 'union' operator to generate a result set consisting of three columns from the Orders table:
+ ship_status: A calculated column that contains a value of SHIPPED or NOT SHIPPED
+ order_id: The order_id column
+ order_date: The order_date column
+If the order has a value in the ship_date column, the ship_status column should contain a value of
+SHIPPED. Otherwise, it should contain a value of NOT SHIPPED. Sort the final result set by 
+order_date.
+
+SELECT 
+    'SHIPPED' AS ship_date, order_id, order_date
+FROM
+    Orders
+WHERE
+    ship_date IS NOT NULL 
+UNION SELECT 
+    'NOT SHIPPED', order_id, order_date
+FROM
+    Orders
+WHERE
+    ship_date IS NULL
+ORDER BY order_date;
+
+use swexpert;
+
+Q17: Retrieve the names of the cities which each consultant lives. Suppress duplicate outputs, and display the values in alphabetical order.
+
+SELECT DISTINCT
+    c_city
+FROM
+    consultant
+ORDER BY c_city ASC;
+
+Q18: Retrieve the project ID and project name of all projects that have parent projects.*/
+SELECT 
+    p_id, project_name
+FROM
+    project
+WHERE
+    parent_p_id IS NOT NULL;
+    
+ Q19: Using only the project table, display the project id, project name, parent project's id along with the parent project'projects name. Include all the projects even 
+ if they do not have any parent project assigned. Hint: Use a self-join.
+
+SELECT
+p.p_id, p.project_name, p.parent_p_id, pr.project_name as 'Praent project''s name'
+FROM
+project p
+ JOIN
+project pr ON p.parent_p_id = pr.p_id;
+
+
+
+Q20: Write a SELECT statement that returns the consultant ID, skill ID and certification from the  consultant_skill table. List only consultants with skills that are certified.
+Sort the final result set by skill ID, followed by consultant ID.
+
+SELECT 
+    c_id, skill_id, certification
+FROM
+    consultant_skill
+WHERE
+    certification = 'Y'
+ORDER BY skill_id , c_id;
+
+Q21: List all the consultant ID, last name and first name, skill ID and skill description, only for all consultants with skills that are certified. Sort the final result 
+set by skill ID, followed by consultant ID
+
+SELECT 
+    C.c_id, C.c_last, C.c_first, S.skill_id, S.skill_description
+FROM
+    consultant C
+        JOIN
+    consultant_skill CS ON C.c_id = CS.c_id
+        JOIN
+    skill S ON S.skill_id = CS.skill_id
+WHERE
+    certification = 'Y'
+ORDER BY skill_id, c_id
